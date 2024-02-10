@@ -1,13 +1,41 @@
 import 'package:flutter/material.dart';
-
+import 'package:to_do_app/Widgets/taskList.dart';
+import 'package:to_do_app/constants.dart';
+import 'package:to_do_app/Screens/addTaskScreen.dart';
 class TasksScreen extends StatelessWidget {
   const TasksScreen({super.key});
-  final int index = 21;
+
+  Widget buildBottomsheet(BuildContext context) {
+    return Container(
+      height: 400,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
-      floatingActionButton: Padding( padding: EdgeInsets.only(bottom: 10 , right: 5),child: FloatingActionButton(onPressed: (){} , backgroundColor: Colors.lightBlueAccent, child: Icon(Icons.add ,size: 30, color: Colors.white,), shape: CircleBorder(), )),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 10, right: 5),
+        child: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet<void>(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10)),
+              ),
+              context: context,
+              builder: (BuildContext context) {
+                return AddTaskScreen();
+              },
+            );
+          },
+          backgroundColor: Colors.lightBlueAccent,
+          child: FABIcon,
+          shape: CircleBorder(),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,14 +74,21 @@ class TasksScreen extends StatelessWidget {
                     fontSize: 18),
               ),
             ),
-            SizedBox( height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Expanded(
               child: Container(
-                child: ListView.builder(itemBuilder: (BuildContext , index) {}, itemCount: 30,),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20, top: 20, bottom: 10),
+                  child: TasksList(),
+                ),
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                ),
               ),
             )
           ],
