@@ -2,9 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:to_do_app/Widgets/taskList.dart';
 import 'package:to_do_app/constants.dart';
 import 'package:to_do_app/Screens/addTaskScreen.dart';
-class TasksScreen extends StatelessWidget {
+import 'package:to_do_app/models/Task.dart';
+class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
+  @override
+  State<TasksScreen> createState() => _TasksScreenState();
+}
 
+class _TasksScreenState extends State<TasksScreen> {  
+  List<Task> task = [
+    Task(name: 'buy Milk'),
+    Task(name: 'buy bread'),
+    Task(name: 'buy chili powder')
+  ];
+  
   Widget buildBottomsheet(BuildContext context) {
     return Container(
       height: 400,
@@ -16,7 +27,7 @@ class TasksScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 10, right: 5),
+        padding: const EdgeInsets.only(bottom: 10, right: 5),
         child: FloatingActionButton(
           onPressed: () {
             showModalBottomSheet<void>(
@@ -27,13 +38,17 @@ class TasksScreen extends StatelessWidget {
               ),
               context: context,
               builder: (BuildContext context) {
-                return AddTaskScreen();
+                return AddTaskScreen(addTask: (taskName){
+                  setState(() {
+                     task.add(Task(name: taskName));
+                  });
+                });
               },
             );
           },
           backgroundColor: Colors.lightBlueAccent,
+          shape: const CircleBorder(),
           child: FABIcon,
-          shape: CircleBorder(),
         ),
       ),
       body: SafeArea(
@@ -67,27 +82,27 @@ class TasksScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 30),
               child: Text(
-                '12 Tasks',
+                '${task.length} Tasks',
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
                     fontSize: 18),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Expanded(
               child: Container(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20, top: 20, bottom: 10),
-                  child: TasksList(),
-                ),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20, top: 20, bottom: 10),
+                  child: TasksList(tasks: task),
                 ),
               ),
             )

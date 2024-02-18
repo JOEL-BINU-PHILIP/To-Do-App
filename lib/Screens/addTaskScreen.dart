@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_app/constants.dart';
+class AddTaskScreen extends StatefulWidget {
+  final void Function(String) addTask;
 
-class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({super.key});
+  AddTaskScreen({super.key ,required this.addTask});
+
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  String taskName ='';
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +19,7 @@ class AddTaskScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(20),
             child: Text(
               'Add Task',
@@ -22,7 +30,13 @@ class AddTaskScreen extends StatelessWidget {
             padding: EdgeInsets.all(20),
             child: TextField(
                 cursorColor: Colors.lightBlueAccent,
-                decoration: bottomSheetTextFieldStyle),
+                decoration: bottomSheetTextFieldStyle,
+                onChanged:(value) => {
+                  setState(() {
+                     taskName = value;
+                  })
+                },
+                ),
           ),
           Padding(
             padding: EdgeInsets.all(20),
@@ -30,9 +44,12 @@ class AddTaskScreen extends StatelessWidget {
               height: 50,
               width: double.infinity,
               child: TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  widget.addTask(taskName);
+                  Navigator.pop(context);
+                },
                 style: bottomSheetButtonStyle,
-                child: Center(
+                child: const Center(
                   child: Text("Add"),
                 ),
               ),
