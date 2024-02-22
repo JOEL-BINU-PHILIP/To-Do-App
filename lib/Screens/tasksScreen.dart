@@ -2,20 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:to_do_app/Widgets/taskList.dart';
 import 'package:to_do_app/constants.dart';
 import 'package:to_do_app/Screens/addTaskScreen.dart';
-import 'package:to_do_app/models/Task.dart';
-class TasksScreen extends StatefulWidget {
-  const TasksScreen({super.key});
-  @override
-  State<TasksScreen> createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {  
-  List<Task> task = [
-    Task(name: 'buy Milk'),
-    Task(name: 'buy bread'),
-    Task(name: 'buy chili powder')
-  ];
-  
+import 'package:to_do_app/main.dart';
+import 'package:provider/provider.dart';
+class TasksScreen extends StatelessWidget {  
   Widget buildBottomsheet(BuildContext context) {
     return Container(
       height: 400,
@@ -38,11 +27,7 @@ class _TasksScreenState extends State<TasksScreen> {
               ),
               context: context,
               builder: (BuildContext context) {
-                return AddTaskScreen(addTask: (taskName){
-                  setState(() {
-                     task.add(Task(name: taskName));
-                  });
-                });
+                return  AddTaskScreen();
               },
             );
           },
@@ -82,11 +67,12 @@ class _TasksScreenState extends State<TasksScreen> {
             Padding(
               padding: EdgeInsets.only(left: 30),
               child: Text(
-                '${task.length} Tasks',
-                style: TextStyle(
+                '${Provider.of<Tasks>(context).tasklength()} Tasks',
+                style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
-                    fontSize: 18),
+                    fontSize: 18
+                   ),
               ),
             ),
             const SizedBox(
@@ -102,7 +88,7 @@ class _TasksScreenState extends State<TasksScreen> {
                 ),
                 child: Padding(
                   padding: EdgeInsets.only(left: 20, top: 20, bottom: 10),
-                  child: TasksList(tasks: task),
+                  child: TasksList(),
                 ),
               ),
             )

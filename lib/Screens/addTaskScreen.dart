@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_app/constants.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_app/main.dart';
 class AddTaskScreen extends StatefulWidget {
-  final void Function(String) addTask;
-
-  AddTaskScreen({super.key ,required this.addTask});
-
+  AddTaskScreen({super.key});
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
   String taskName ='';
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,10 +29,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             child: TextField(
                 cursorColor: Colors.lightBlueAccent,
                 decoration: bottomSheetTextFieldStyle,
-                onChanged:(value) => {
-                  setState(() {
-                     taskName = value;
-                  })
+                onChanged:(value) => {        
+                     taskName = value
                 },
                 ),
           ),
@@ -44,9 +40,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               height: 50,
               width: double.infinity,
               child: TextButton(
-                onPressed: () {
-                  widget.addTask(taskName);
-                  Navigator.pop(context);
+                onPressed: () {            
+                    Provider.of<Tasks>(context , listen: false).addTask(taskName);
+                     Navigator.pop(context);
                 },
                 style: bottomSheetButtonStyle,
                 child: const Center(
